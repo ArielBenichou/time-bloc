@@ -47,11 +47,12 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
 
     return (
         <div class="border border-gray-300 grid grid-cols-8 h-full overflow-scroll rounded">
+            { /* TODO: change the rendering to be row based, so we can stick the top one to top */}
             {/* Leftmost column for hours */}
             <div class="border border-gray-300" >
-                <div class="m-2 flex flex-col gap-2">
+                <div class="m-2 flex flex-col">
                     <div class="text-lg font-semibold">day</div>
-                    <div class="text-gray-500">floop</div>
+                    <div class="text-gray-500">hours</div>
                 </div>
                 {/* Render hour slots */}
                 {Array.from({ length: 24 }).map((_, hour) => (
@@ -65,9 +66,9 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
                 const dayDate = props.currentWeek.add(index, 'day');
                 return (
                     <div class="border border-gray-300" >
-                        <div class="m-2 flex flex-col gap-2">
+                        <div class="m-2 flex flex-col">
                             <div class="text-lg font-semibold">{day}</div>
-                            <div class="text-gray-500">{dayDate.format('ddd, MMM D')}</div>
+                            <div class="text-gray-500">{dayDate.format('MMM D')}</div>
                         </div>
                         {/* Render hour slots */}
                         {Array.from({ length: 24 }).map((_, hour) => (
