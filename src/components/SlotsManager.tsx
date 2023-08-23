@@ -5,16 +5,33 @@ interface Slot {
     id: number;
     name: string;
     hoursNeeded: number;
+    hoursBooked: number;
     color: string;
 }
 
 const SlotsManager: Component<{ currentWeek: Dayjs }> = (props) => {
     const [slots, setSlots] = createSignal<Slot[]>([
+        // Add more calendar events as needed
         {
             id: 1,
-            name: 'Task 1',
+            name: 'Math',
+            hoursNeeded: 15,
+            hoursBooked: 1,
+            color: '#F45866',
+        },
+        {
+            id: 2,
+            name: 'Drawing',
             hoursNeeded: 5,
-            color: '#223344',
+            hoursBooked: 1,
+            color: '#C45AB3',
+        },
+        {
+            id: 3,
+            name: 'Workout',
+            hoursNeeded: 5,
+            hoursBooked: 2,
+            color: '#9CEC5B',
         },
         // Add more slots as needed
     ]);
@@ -30,6 +47,7 @@ const SlotsManager: Component<{ currentWeek: Dayjs }> = (props) => {
             id: newSlotId,
             name: newSlotName(),
             hoursNeeded: newSlotHoursNeeded(),
+            hoursBooked: 0,
             color: newSlotColor(),
         };
         setSlots(prevSlots => [...prevSlots, newSlot]);
@@ -48,7 +66,7 @@ const SlotsManager: Component<{ currentWeek: Dayjs }> = (props) => {
                         <div style={{ "background-color": slot.color }} class="w-2" />
                         <div class="flex flex-col p-2">
                             <div class="font-semibold">{slot.name}</div>
-                            <div class="text-gray-500">Hours Needed: {slot.hoursNeeded} hours</div>
+                            <div class="text-gray-500">{slot.hoursBooked}h / {slot.hoursNeeded}h</div>
                             {/* Here you can implement drag and drop logic to assign slots to the calendar */}
                             {/* You can also include configuration options for the slot */}
                         </div>

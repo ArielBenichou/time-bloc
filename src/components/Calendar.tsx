@@ -7,29 +7,68 @@ interface CalendarEvent {
     title: string;
     startTime: string; // ISO 8601 format (e.g., "2023-08-22T10:00:00.000Z")
     endTime: string;   // ISO 8601 format (e.g., "2023-08-22T11:00:00.000Z")
+    color: string; // HEX
 }
 
 const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
     const [calendarEvents, setCalendarEvents] = createSignal<CalendarEvent[]>([
         {
             id: 1,
-            title: 'Meeting with Team',
+            title: 'Math',
             startTime: '2023-08-22T10:00:00.000Z',
             endTime: '2023-08-22T11:00:00.000Z',
+            color: '#F45866'
+        }, {
+            id: 2,
+            title: 'Drawing',
+            startTime: '2023-08-22T11:00:00.000Z',
+            endTime: '2023-08-22T12:00:00.000Z',
+            color: '#C45AB3'
+        }, {
+            id: 3,
+            title: 'Workout',
+            startTime: '2023-08-23T18:00:00.000Z',
+            endTime: '2023-08-23T19:00:00.000Z',
+            color: '#9CEC5B'
+        }, {
+            id: 4,
+            title: 'Workout',
+            startTime: '2023-08-24T18:00:00.000Z',
+            endTime: '2023-08-24T19:00:00.000Z',
+            color: '#9CEC5B'
         },
+
+
+
         // Add more calendar events as needed
     ]);
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     return (
-        <div class="border border-gray-300 grid grid-cols-7 h-full overflow-scroll rounded">
+        <div class="border border-gray-300 grid grid-cols-8 h-full overflow-scroll rounded">
+            {/* Leftmost column for hours */}
+            <div class="border border-gray-300" >
+                <div class="m-2 flex flex-col gap-2">
+                    <div class="text-lg font-semibold">day</div>
+                    <div class="text-gray-500">floop</div>
+                </div>
+                {/* Render hour slots */}
+                {Array.from({ length: 24 }).map((_, hour) => (
+
+                    <div class="h-10 border-t border-gray-300 flex items-center pl-1 pr-2">
+                        {hour}:00
+                    </div>
+                ))}
+            </div>
             {daysOfWeek.map((day, index) => {
                 const dayDate = props.currentWeek.add(index, 'day');
                 return (
-                    <div class="border border-gray-300 p-2" >
-                        <div class="text-lg font-semibold mb-2">{day}</div>
-                        <div class="text-gray-500 mb-2">{dayDate.format('ddd, MMM D')}</div>
+                    <div class="border border-gray-300" >
+                        <div class="m-2 flex flex-col gap-2">
+                            <div class="text-lg font-semibold">{day}</div>
+                            <div class="text-gray-500">{dayDate.format('ddd, MMM D')}</div>
+                        </div>
                         {/* Render hour slots */}
                         {Array.from({ length: 24 }).map((_, hour) => (
                             <div class="h-10 border-t border-gray-300" >
@@ -43,7 +82,8 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
                                     ) {
                                         return (
                                             <div
-                                                class="bg-blue-200 h-10 p-1 rounded text-sm cursor-pointer"
+                                                class="h-10 p-1 rounded text-sm cursor-pointer"
+                                                style={{ "background-color": event.color }}
                                             >
                                                 {event.title}
                                             </div>
