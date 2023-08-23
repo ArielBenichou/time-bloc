@@ -1,0 +1,21 @@
+# TODO
+- [ ] Move State of Slot and Event to Parent,
+    - Child component should only display and capture info
+    - in the future the data will come from DB and Google API
+- [ ] Add color data to event so we color it with the right color on calendar.
+- [ ] Add User Badge component to main screen with logut option
+- [ ] redirect to login screen if not logged in, only kind of login is with Google OAuth2.
+- [ ] implement drag and drop of event on the calendar to change their time slot.
+- [ ] implement drag and drop of time slot to the calendar to create new 1 hour slot.
+- [ ] for now every thing is working as round one hour slot (can only add one hour to slot, and can only book them from 00:00 to 59:59)
+    - [ ] change to accomodate flexible time, from quarter hour to full day
+    - [ ] can add half and quarter hour to slot
+    - [ ] can change the amout to be drag'n'dropped from the slot, default to one hour
+- [ ] when clicking on the slot, open popup to update slot or delete it.
+- [ ] make the save button beside the add slot to update google calendar.
+- [ ] make the slot save to db
+    - [ ] start with local storage
+    - [ ] add option to connect to external db
+- [ ] fetch events from calender to show the TimeBloc calendar events, and other (as grey-ed out, because that not ours)
+- [ ] make slot with two mode, static and repeating. when static you decide on a bloc of time to book. when repeating you decide if this is daily, weekly, or monthly time that reset for each period.
+

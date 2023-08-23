@@ -10,7 +10,7 @@ interface CalendarEvent {
 }
 
 const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
-    const [calendarEvents] = createSignal<CalendarEvent[]>([
+    const [calendarEvents, setCalendarEvents] = createSignal<CalendarEvent[]>([
         {
             id: 1,
             title: 'Meeting with Team',
@@ -20,10 +20,32 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
         // Add more calendar events as needed
     ]);
 
+    const [draggingEvent, setDraggingEvent] = createSignal<CalendarEvent | null>(null);
+    const [isDragging, setIsDragging] = createSignal(false);
+
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+    const handleDragStart = (event: CalendarEvent) => {
+        setDraggingEvent(event);
+        setIsDragging(true);
+    };
+
+    const handleDrag = (event: MouseEvent) => {
+        if (isDragging() && draggingEvent()) {
+            // Update event start and end times based on cursor position
+            // Implement snapping behavior to time slots
+        }
+    };
+
+    const handleDragEnd = () => {
+        if (draggingEvent()) {
+            // Update the event data in the calendarEvents signal
+            // Reset dragging state
+        }
+    };
+
     return (
-        <div class="border border-gray-300 rounded p-4 h-full overflow-scroll">
+        <div class="border border-gray-300 rounded p-4 h-full overflow-scroll" onMouseMove={handleDrag} onMouseUp={handleDragEnd}>
             <h2 class="text-xl font-semibold mb-4">Calendar</h2>
             <div class="grid grid-cols-7 gap-4">
                 {daysOfWeek.map((day, index) => {
@@ -44,7 +66,11 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
                                             eventEndTime.hour() > hour
                                         ) {
                                             return (
-                                                <div class="bg-blue-200 h-10 p-1 rounded text-sm">
+                                                <div
+                                                    class="bg-blue-200 h-10 p-1 rounded text-sm cursor-pointer"
+
+                                                    onMouseDown={() => handleDragStart(event)}
+                                                >
                                                     {event.title}
                                                 </div>
                                             );
