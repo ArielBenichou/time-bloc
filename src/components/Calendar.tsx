@@ -44,7 +44,64 @@ const Calendar: Component<{ currentWeek: Dayjs }> = (props) => {
     ]);
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return (
+        <div class="border border-gray-300 h-full rounded overflow-scroll">
+            <div class="grid grid-cols-8">
+                <div class="border border-gray-300" >
+                    <div class="m-2 flex flex-col">
+                        <div class="text-lg font-semibold">day</div>
+                        <div class="text-gray-500">hours</div>
+                    </div>
+                </div>
 
+                {daysOfWeek.map((day, index) => {
+                    const dayDate = props.currentWeek.add(index, 'day');
+                    return (
+                        <div class="border border-gray-300" >
+                            <div class="m-2 flex flex-col">
+                                <div class="text-lg font-semibold">{day}</div>
+                                <div class="text-gray-500">{dayDate.format('MMM D')}</div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+
+            {Array.from({ length: 24 }).map((_: any, hour: number) => (
+                <div class="grid grid-cols-8">
+                    <div class="h-10 border border-gray-300 flex items-center pl-1 pr-2">
+                        {hour}:00
+                    </div>
+                    {daysOfWeek.map((day, index) => {
+                        const dayDate = props.currentWeek.add(index, 'day');
+                        return (
+                            <div class="h-10 border border-gray-300" >
+                                {calendarEvents().map(event => {
+                                    const eventStartTime = dayjs(event.startTime);
+                                    const eventEndTime = dayjs(event.endTime);
+                                    if (
+                                        eventStartTime.isSame(dayDate, 'day') &&
+                                        eventStartTime.hour() <= hour &&
+                                        eventEndTime.hour() > hour
+                                    ) {
+                                        return (
+                                            <div
+                                                class="h-10 p-1 rounded text-sm cursor-pointer"
+                                                style={{ "background-color": event.color }}
+                                            >
+                                                {event.title}
+                                            </div>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </div>
+                        );
+                    })}
+                </div>
+            ))}
+        </div>
+    );
     return (
         <div class="border border-gray-300 grid grid-cols-8 h-full overflow-scroll rounded">
             { /* TODO: change the rendering to be row based, so we can stick the top one to top */}

@@ -1,43 +1,8 @@
 import { createSignal } from 'solid-js';
 import type { Component } from 'solid-js';
 import Calendar from './components/Calendar';
-import dayjs, { Dayjs } from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import weekday from 'dayjs/plugin/weekday';
 import SlotsManager from './components/SlotsManager';
-dayjs.extend(isSameOrBefore);
-dayjs.extend(weekday);
-
-function getCurrentSunday() {
-    const currentDate = dayjs();
-
-    const sunday = currentDate.day(0);
-
-    // If the current date is after Sunday, consider it for the next week
-    if (currentDate.isSameOrBefore(sunday)) {
-        sunday.subtract(7, 'days');
-    }
-
-    // Set the time to 00:00
-    const sundayAtMidnight = sunday.startOf('day');
-
-    return sundayAtMidnight;
-}
-
-function formatWeek(date: Dayjs) {
-    const startOfWeek = date.startOf('week');
-    const endOfWeek = date.endOf('week');
-
-    const startMonth = startOfWeek.format('MMMM');
-    const endMonth = endOfWeek.format('MMMM');
-    const year = startOfWeek.format('YYYY');
-
-    if (startMonth === endMonth) {
-        return startOfWeek.format('MMMM YYYY');
-    } else {
-        return `${startMonth.slice(0, 3)}-${endMonth.slice(0, 3)} ${year}`;
-    }
-}
+import { formatWeek, getCurrentSunday } from './utils/time-and-date.util';
 
 const App: Component = () => {
     const [currentWeek, setCurrentWeek] = createSignal(getCurrentSunday());
@@ -57,7 +22,8 @@ const App: Component = () => {
                             class="px-4 py-2 text-black bg-gray-100 hover:bg-gray-200 rounded-full"
                             onClick={() => setCurrentWeek(currentWeek().subtract(7, 'days'))}
                         >
-                            &lt;                        </button>
+                            &lt;
+                        </button>
                         <button
                             class="px-4 py-2 text-black bg-gray-100 hover:bg-gray-200 rounded-full"
                             onClick={() => setCurrentWeek(currentWeek().add(7, 'days'))}
