@@ -61,7 +61,7 @@ const SlotsManager: Component<{ currentWeek: Dayjs }> = (props) => {
         <>
             <h2 class="text-xl font-semibold mb-4">Slot Assignment</h2>
             <div class="overflow-scroll max-h-full">
-                {slots().map(slot => (
+                {Array(5).fill(slots()).flat().map(slot => (
                     <div class="border border-gray-300 mb-2 flex" >
                         <div style={{ "background-color": slot.color }} class="w-2" />
                         <div class="flex flex-col p-2">
