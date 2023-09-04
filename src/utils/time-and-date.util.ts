@@ -4,6 +4,8 @@ import weekday from 'dayjs/plugin/weekday';
 dayjs.extend(isSameOrBefore);
 dayjs.extend(weekday);
 
+export const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export function getCurrentSunday() {
     const currentDate = dayjs();
 
