@@ -1,4 +1,4 @@
-import { createSignal, splitProps } from 'solid-js';
+import { createSignal, onCleanup, onMount, splitProps } from 'solid-js';
 import rightChevron from "./assets/right-chevron.png";
 import type { Component, Setter } from 'solid-js';
 import Calendar from './components/Calendar';
@@ -34,30 +34,44 @@ const App: Component = () => {
 const UserAvatar: Component = () => {
     // TODO: make texts dynmaic, make the button do somthing
     const [isOpen, setIsOpen] = createSignal(false);
-    return (
-        <>
-            <div class="relative" onClick={() => setIsOpen(!isOpen())}>
-                <div class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600">
-                    <span class="font-medium text-gray-600 dark:text-gray-300">AB</span>
-                </div>
-                <span class="absolute left-7 top-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-green-400 dark:border-gray-800"></span>
+    let ref: HTMLDivElement;
 
-                <div id="userDropdown" class={(isOpen() ? "" : "hidden ") + "right-0 z-10 absolute mt-1 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:divide-gray-600 dark:bg-gray-700"}>
-                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                        <div>Ariel Benichou</div>
-                        <div class="truncate font-medium">arielbenichou@nomail.net</div>
-                    </div>
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
-                        <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                        </li>
-                    </ul>
-                    <div class="py-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-                    </div>
+    const handleClick = (event: MouseEvent) => {
+        if (!ref.contains((event as any).target) && isOpen()) {
+            setIsOpen(false);
+        };
+    };
+
+    onMount(() => {
+        document.addEventListener('click', handleClick);
+    });
+
+    onCleanup(() => {
+        document.removeEventListener('click', handleClick);
+    });
+
+    return (
+        <div class="relative" ref={ref!} >
+            <div onClick={() => setIsOpen(!isOpen())} class="cursor-pointer relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-600">
+                <span class="font-medium text-gray-600 dark:text-gray-300">AB</span>
+                <span class="absolute left-7 top-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-green-400 dark:border-gray-800"></span>
+            </div>
+
+            <div class={(isOpen() ? "" : "hidden ") + "right-0 z-10 absolute mt-1 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:divide-gray-600 dark:bg-gray-700"}>
+                <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                    <div>Ariel Benichou</div>
+                    <div class="truncate font-medium">arielbenichou@nomail.net</div>
+                </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                    <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                    </li>
+                </ul>
+                <div class="py-1">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
